@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}LENS Categories{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-diagram-3"></i> LENS Application Categories</h2>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <i class="bi bi-folder-plus"></i> Add New Category
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_lens_category') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Category Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="2"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Category</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="bi bi-file-plus"></i> Add Subcategory
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_lens_subcategory') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Parent Category</label>
+                        <select name="category_id" class="form-select" required>
+                            <option value="">Select Category</option>
+                            {% for cat in categories %}
+                            <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Subcategory Name</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Add Subcategory</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header"><i class="bi bi-list-nested"></i> LENS Categories Structure</div>
+    <div class="card-body">
+        {% if categories %}
+        <div class="accordion" id="lensAccordion">
+            {% for cat in categories %}
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button {% if not loop.first %}collapsed{% endif %}" type="button" 
+                            data-bs-toggle="collapse" data-bs-target="#collapse{{ cat.id }}">
+                        <strong>{{ cat.name }}</strong>
+                        <span class="badge bg-primary ms-2">{{ cat.subcat_count or 0 }} items</span>
+                    </button>
+                </h2>
+                <div id="collapse{{ cat.id }}" class="accordion-collapse collapse {% if loop.first %}show{% endif %}" 
+                     data-bs-parent="#lensAccordion">
+                    <div class="accordion-body">
+                        {% if cat.subcategories %}
+                        <ul class="list-group">
+                            {% for subcat in cat.subcategories %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ subcat.name }}
+                                <form method="POST" action="{{ url_for('delete_lens_subcategory', subcat_id=subcat.id) }}" 
+                                      style="display:inline;" onsubmit="return confirm('Delete this subcategory?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                        {% else %}
+                        <p class="text-muted">No subcategories yet</p>
+                        {% endif %}
+                        <div class="mt-3">
+                            <form method="POST" action="{{ url_for('delete_lens_category', cat_id=cat.id) }}" 
+                                  style="display:inline;" onsubmit="return confirm('Delete this category and all subcategories?')">
+                                <button type="submit" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash"></i> Delete Category
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="text-muted">No categories yet. Add one above.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

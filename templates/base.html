@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Community Contribution Tracking{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .sidebar { 
+            min-height: 100vh; 
+            background: linear-gradient(180deg, #1e3c72 0%, #2a5298 100%);
+            overflow-y: auto;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.15);
+        }
+        .sidebar-header {
+            background: rgba(255,255,255,0.1);
+            padding: 18px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: 8px;
+        }
+        .sidebar-header h5 {
+            color: white;
+            font-weight: bold;
+            margin: 0;
+            font-size: 17px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        .menu-section-title {
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 12px 15px 5px 15px;
+            letter-spacing: 1.2px;
+            opacity: 0.95;
+        }
+        .menu-item {
+            position: relative;
+            margin: 3px 8px;
+        }
+        .menu-item > a {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 11px 14px;
+            color: #ffffff !important;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.25s;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .menu-item > a span {
+            color: #ffffff !important;
+        }
+        .menu-item > a:hover {
+            background: rgba(255,255,255,0.18);
+            transform: translateX(3px);
+            color: #ffffff !important;
+        }
+        .menu-item.active > a {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.35);
+            color: #ffffff !important;
+        }
+        .menu-arrow {
+            transition: transform 0.25s;
+            font-size: 11px;
+            opacity: 0.9;
+            color: #ffffff;
+        }
+        .menu-item.open .menu-arrow {
+            transform: rotate(90deg);
+        }
+        .submenu {
+            display: none;
+            background: rgba(0,0,0,0.18);
+            border-radius: 6px;
+            margin: 4px 0 4px 12px;
+            padding: 4px 0;
+        }
+        .menu-item.open .submenu {
+            display: block;
+            animation: slideDown 0.25s ease-out;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .submenu a {
+            display: block;
+            padding: 9px 14px;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 400;
+            border-radius: 5px;
+            margin: 2px 7px;
+            transition: all 0.2s;
+        }
+        .submenu a:hover {
+            background: rgba(255,255,255,0.14);
+            color: #ffffff !important;
+            padding-left: 18px;
+        }
+        .level-3-menu {
+            background: rgba(0,0,0,0.12);
+            margin-left: 12px;
+            padding: 4px 0;
+            border-left: 2px solid rgba(255,215,0,0.4);
+        }
+        .level-3-menu a {
+            font-size: 12px;
+            color: #ffffff !important;
+            font-weight: 400;
+        }
+        .sidebar a {
+            color: #ffffff !important;
+        }
+        .main-content { 
+            padding: 25px;
+            background: #f8f9fa;
+        }
+        .stat-card { border-left: 4px solid; }
+        .stat-card.blue { border-color: #3498db; }
+        .stat-card.green { border-color: #27ae60; }
+        .stat-card.orange { border-color: #e67e22; }
+        .stat-card.purple { border-color: #9b59b6; }
+        .stat-card.red { border-color: #e74c3c; }
+        
+        footer a:hover {
+            color: #3498db !important;
+            text-decoration: underline !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block sidebar py-0">
+                <div class="sidebar-header">
+                    <h5><i class="bi bi-people-fill"></i> Community System</h5>
+                </div>
+                
+                <div class="menu-section-title">COMMUNITY ENGAGEMENT</div>
+                
+                <!-- Events -->
+                <div class="menu-item">
+                    <a onclick="toggleMenu(this)">
+                        <span><i class="bi bi-calendar-event"></i> Events</span>
+                        <span class="menu-arrow">▶</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="{{ url_for('community_menu', category='events', subcategory='entertainment') }}">Entertainment</a>
+                        <a href="{{ url_for('community_menu', category='events', subcategory='performance') }}">Performance</a>
+                    </div>
+                </div>
+                
+                <!-- Accountability -->
+                <div class="menu-item">
+                    <a onclick="toggleMenu(this)">
+                        <span><i class="bi bi-shield-check"></i> Accountability</span>
+                        <span class="menu-arrow">▶</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="{{ url_for('community_menu', category='accountability', subcategory='consensus-budget') }}">Consensus Budget</a>
+                        <a href="{{ url_for('community_menu', category='accountability', subcategory='community-concerns') }}">Community Concerns</a>
+                        <div class="menu-item">
+                            <a onclick="event.stopPropagation(); toggleMenu(this)">
+                                <span>Communications</span>
+                                <span class="menu-arrow">▶</span>
+                            </a>
+                            <div class="submenu level-3-menu">
+                                <a href="{{ url_for('community_menu', category='accountability', subcategory='communications', detail='media') }}">Media</a>
+                                <a href="{{ url_for('community_menu', category='accountability', subcategory='communications', detail='institutions') }}">Institutions</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Fellowship -->
+                <div class="menu-item">
+                    <a onclick="toggleMenu(this)">
+                        <span><i class="bi bi-people"></i> Fellowship</span>
+                        <span class="menu-arrow">▶</span>
+                    </a>
+                    <div class="submenu">
+                        <div class="menu-item">
+                            <a onclick="event.stopPropagation(); toggleMenu(this)">
+                                <span>Gatherings</span>
+                                <span class="menu-arrow">▶</span>
+                            </a>
+                            <div class="submenu level-3-menu">
+                                <a href="{{ url_for('community_menu', category='fellowship', subcategory='gatherings', detail='festivals') }}">Festivals</a>
+                                <a href="{{ url_for('community_menu', category='fellowship', subcategory='gatherings', detail='reunions') }}">Reunions</a>
+                                <a href="{{ url_for('community_menu', category='fellowship', subcategory='gatherings', detail='raffles') }}">Raffles</a>
+                            </div>
+                        </div>
+                        <div class="menu-item">
+                            <a onclick="event.stopPropagation(); toggleMenu(this)">
+                                <span>Leadership</span>
+                                <span class="menu-arrow">▶</span>
+                            </a>
+                            <div class="submenu level-3-menu">
+                                <a href="{{ url_for('community_menu', category='fellowship', subcategory='leadership', detail='contacts') }}">Contacts</a>
+                                <a href="{{ url_for('community_menu', category='fellowship', subcategory='leadership', detail='neighborhoods') }}">Neighborhoods</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Performance - direct link -->
+                <div class="menu-item">
+                    <a href="{{ url_for('community_menu', category='performance') }}">
+                        <span><i class="bi bi-graph-up"></i> Performance</span>
+                    </a>
+                </div>
+                
+                <div class="menu-section-title" style="margin-top: 20px;">SYSTEM MANAGEMENT</div>
+                
+                <div class="menu-item">
+                    <a href="{{ url_for('index') }}">
+                        <span><i class="bi bi-speedometer2"></i> Dashboard</span>
+                    </a>
+                </div>
+                
+                <div class="menu-item">
+                    <a onclick="toggleMenu(this)">
+                        <span><i class="bi bi-folder"></i> Data Management</span>
+                        <span class="menu-arrow">▶</span>
+                    </a>
+                    <div class="submenu">
+                        <a href="{{ url_for('event_list') }}">Events</a>
+                        <a href="{{ url_for('volunteer_list') }}">Volunteers</a>
+                        <a href="{{ url_for('organization_list') }}">Organizations</a>
+                    </div>
+                </div>
+                
+                <div class="menu-item">
+                    <a href="{{ url_for('reports') }}">
+                        <span><i class="bi bi-bar-chart"></i> Reports</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <main class="col-md-10 ms-sm-auto main-content">
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }} alert-dismissible fade show py-2">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endwith %}
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    </div>
+    
+    <!-- Simple Footer -->
+    <footer style="background-color: #2c3e50; color: white; padding: 20px 0; margin-top: 50px;">
+        <div class="container-fluid text-center">
+            <p class="mb-0">© 2026 Community Contribution Tracking System | <a href="#" class="text-white">Help</a> | <a href="#" class="text-white">Contact</a></p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleMenu(element) {
+            const menuItem = element.parentElement;
+            const isOpen = menuItem.classList.contains('open');
+            
+            // close other menus first
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('open');
+            });
+            
+            // toggle this one
+            if (!isOpen) {
+                menuItem.classList.add('open');
+            }
+        }
+    </script>
+</body>
+</html>

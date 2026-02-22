@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}LENS Application List{% endblock %}
+{% block content %}
+<style>
+    .lens-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 11px;
+        font-family: Arial, sans-serif;
+    }
+    .lens-table td {
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        vertical-align: top;
+    }
+    .lens-header {
+        text-align: center;
+        font-style: italic;
+        padding: 20px;
+        font-size: 14px;
+    }
+    .lens-title {
+        text-align: center;
+        font-weight: bold;
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .category-title {
+        font-weight: bold;
+        text-transform: uppercase;
+        margin-bottom: 8px;
+        font-size: 12px;
+    }
+    .subcategory-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .subcategory-list li {
+        padding: 2px 0;
+        cursor: pointer;
+        position: relative;
+    }
+    .subcategory-list li:hover {
+        background-color: #f0f0f0;
+    }
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        border: 1px solid #ccc;
+        box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+        z-index: 1000;
+        min-width: 200px;
+        padding: 10px;
+        left: 100%;
+        top: 0;
+        margin-left: 5px;
+    }
+    .subcategory-list li:hover .dropdown-content {
+        display: block;
+    }
+    .has-dropdown::after {
+        content: " ▼";
+        font-size: 8px;
+    }
+    .highlight-yellow {
+        background-color: #ffff00;
+    }
+    .note-section {
+        border-top: 2px solid #000;
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+    .level-title {
+        font-weight: bold;
+        margin-top: 8px;
+    }
+</style>
+
+<div class="lens-title">LENS APPLICATION LIST</div>
+<div class="lens-header">(Last updated: replace this date, email to responsible party to update it)</div>
+
+<table class="lens-table">
+    <tr>
+        <!-- Column 1: CALENDAR -->
+        <td style="width: 16%;">
+            <div class="category-title">CALENDAR</div>
+            <ul class="subcategory-list">
+                <li>Event</li>
+                <li>Event - Heartness</li>
+                <li>School</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">ACCOUNTABILITY</div>
+            <ul class="subcategory-list">
+                <li>Observation Budget</li>
+                <li>Issues
+                    <ul style="margin-left: 15px; list-style: none;">
+                        <li>Community</li>
+                        <li>Education</li>
+                        <li>Land Use / Development</li>
+                        <li>Environment</li>
+                        <li>Judiciary</li>
+                        <li>Safety</li>
+                        <li>Taxes</li>
+                        <li>Public Policy</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">COMMUNICATIONS</div>
+            <ul class="subcategory-list">
+                <li>Application
+                    <ul style="margin-left: 15px; list-style: none;">
+                        <li>Medical</li>
+                        <li>Dental</li>
+                    </ul>
+                </li>
+                <li>Effectiveness</li>
+                <li>Lens Stats</li>
+                <li>Content</li>
+            </ul>
+        </td>
+        
+        <!-- Column 2: FELLOWSHIP -->
+        <td style="width: 16%;">
+            <div class="category-title">FELLOWSHIP</div>
+            <ul class="subcategory-list">
+                <li>Advocacy</li>
+                <li>Announcements</li>
+                <li>Entertainment</li>
+                <li>Events</li>
+                <li>Recognition</li>
+                <li>Statistics</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">LEADERSHIP</div>
+            <ul class="subcategory-list">
+                <li>Contacts</li>
+                <li>Neighborhoods</li>
+                <li>Education</li>
+                <li>Media</li>
+                <li>Regulations</li>
+                <li>Licensing</li>
+                <li>Permits</li>
+                <li>Zoning</li>
+                <li>Landscaping</li>
+                <li>Technology
+                    <ul style="margin-left: 15px; list-style: none;">
+                        <li>AI</li>
+                        <li>Broadband</li>
+                    </ul>
+                </li>
+                <li>Elections / neighborhood</li>
+                <li>Public Engagement</li>
+                <li>Regional Policies / Initiatives</li>
+            </ul>
+        </td>
+        
+        <!-- Column 3: SERVICE -->
+        <td style="width: 16%;">
+            <div class="category-title">SERVICE</div>
+            <ul class="subcategory-list">
+                <li>Community Needs (Religion)</li>
+                <li>Social Programs</li>
+                <li>Statistics</li>
+                <li>Celebrations</li>
+                <li>Lectures</li>
+                <li>Meetings</li>
+                <li>Sports hosting fishing too</li>
+                <li>Calendar</li>
+                <li class="has-dropdown highlight-yellow">e-Commons Forums
+                    <div class="dropdown-content">
+                        <strong>e-Commons Forums Details:</strong><br>
+                        Online community discussion platform for neighborhood engagement and information sharing.
+                    </div>
+                </li>
+                <li>Individual</li>
+                <li>Organizations</li>
+                <li>The Lens</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">Day Care</div>
+            <ul class="subcategory-list">
+                <li>Education Pre K</li>
+                <li>K-12</li>
+                <li>Preschool</li>
+                <li>Four Year</li>
+                <li>Training</li>
+                <li>Licensing</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">Facilities</div>
+            <ul class="subcategory-list">
+                <li>Conference Room</li>
+                <li>Facility Reservations</li>
+                <li>Meeting Rooms</li>
+                <li>After Hours Support</li>
+                <li>Airport Info</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">Governmental</div>
+            <ul class="subcategory-list">
+                <li>Health Dept</li>
+                <li>Institutions Reg</li>
+                <li>Licensing</li>
+                <li>Support</li>
+                <li>Public Police</li>
+                <li>Tech Loan Library</li>
+                <li>Training</li>
+                <li>Volunteers</li>
+                <li>Counseling</li>
+                <li>Health Care</li>
+                <li>Hospitals</li>
+            </ul>
+        </td>
+        
+        <!-- Column 4: VIABILITY -->
+        <td style="width: 16%;">
+            <div class="category-title">VIABILITY</div>
+            <ul class="subcategory-list">
+                <li>Qshere</li>
+                <li>Qshere</li>
+                <li>e-Commerce</li>
+                <li>Real Estate</li>
+                <li>Employment</li>
+                <li>Apprenticeships</li>
+                <li>Internships</li>
+                <li>Gig Work</li>
+                <li>History</li>
+                <li>Workforce</li>
+                <li class="highlight-yellow">Wearing / Animal Audit</li>
+                <li>Community Coordinating System</li>
+                <li>Organizational Chart</li>
+            </ul>
+            
+            <div class="category-title" style="margin-top: 20px;">Assistance (Time & talent)</div>
+            <ul class="subcategory-list">
+                <li>Assessments (volunteers)</li>
+                <li>Referrals (followup)</li>
+                <li>Tech - Verifications</li>
+                <li>Implementations Checks</li>
+                <li>Subpoena</li>
+            </ul>
+        </td>
+        
+        <!-- Column 5: NOTE -->
+        <td style="width: 36%;">
+            <div class="category-title">NOTE: Lens is under the Directory</div>
+            <p style="font-size: 10px; margin: 5px 0;">
+                <em>Assumes that Jack is working on.</em><br>
+                <strong>Should you have a conversation or</strong><br>
+                <strong>is the process of just posting a concept</strong><br>
+                <strong>is just printing?</strong>
+            </p>
+            
+            <div class="note-section">
+                <div class="level-title">LEVEL 1: Top listing is the lead items</div>
+                <div class="level-title">LEVEL 2: After pulling from Level 1, the sub</div>
+                <div class="level-title">LEVEL 3:</div>
+                <p style="font-size: 10px; margin: 5px 0;">
+                    The right side of the submit lists the<br>
+                    Lens applications. The user will<br>
+                    select the application and then<br>
+                    loads that application.
+                </p>
+            </div>
+            
+            <div style="margin-top: 20px; padding: 10px; background-color: #f9f9f9; border: 1px solid #ddd;">
+                <strong>Long Term Care</strong><br>
+                <strong>Hospitals</strong><br>
+                <strong>Licensing</strong>
+            </div>
+        </td>
+    </tr>
+</table>
+
+<div style="margin-top: 20px; padding: 15px; background-color: #e8f4f8; border-left: 4px solid #3498db;">
+    <h5><i class="bi bi-info-circle"></i> How to Use This Page</h5>
+    <ul>
+        <li>Hover over items with <strong>▼</strong> to see dropdown details</li>
+        <li>Yellow highlighted items have special notes or features</li>
+        <li>Click on any category to filter events by that classification</li>
+        <li>This structure matches the LENS Application List document</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}Community Engagement - {{ category|title }}{% endblock %}
+{% block content %}
+<style>
+    .page-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 35px;
+        border-radius: 12px;
+        margin-bottom: 25px;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.25);
+    }
+    .page-header h1 {
+        font-size: 32px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .breadcrumb-custom {
+        background: rgba(255,255,255,0.18);
+        padding: 8px 18px;
+        border-radius: 20px;
+        display: inline-block;
+        font-size: 13px;
+    }
+    .content-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        margin-bottom: 18px;
+    }
+    .info-box {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        padding: 18px;
+        border-radius: 8px;
+        margin: 18px 0;
+    }
+    .feature-list {
+        list-style: none;
+        padding: 0;
+    }
+    .feature-list li {
+        padding: 13px;
+        margin: 8px 0;
+        background: #f8f9fa;
+        border-left: 3px solid #667eea;
+        border-radius: 4px;
+        transition: all 0.25s;
+    }
+    .feature-list li:hover {
+        transform: translateX(8px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+</style>
+
+<div class="page-header">
+    <div class="breadcrumb-custom">
+        <i class="bi bi-house-door"></i> Community Engagement
+        {% if category %} / {{ category|replace('-', ' ')|title }}{% endif %}
+        {% if subcategory %} / {{ subcategory|replace('-', ' ')|title }}{% endif %}
+        {% if detail %} / {{ detail|replace('-', ' ')|title }}{% endif %}
+    </div>
+    <h1>
+        {% if detail %}
+            {{ detail|replace('-', ' ')|title }}
+        {% elif subcategory %}
+            {{ subcategory|replace('-', ' ')|title }}
+        {% else %}
+            {{ category|replace('-', ' ')|title }}
+        {% endif %}
+    </h1>
+    <p class="mb-0">Community Engagement Program</p>
+</div>
+
+<div class="content-card">
+    {% if category == 'events' %}
+        <h3><i class="bi bi-calendar-event"></i> Events Management</h3>
+        {% if subcategory == 'entertainment' %}
+            <p>Manage and organize entertainment events for the community.</p>
+            <ul class="feature-list">
+                <li><strong>Concerts & Shows</strong> - Schedule and promote musical performances</li>
+                <li><strong>Theater Productions</strong> - Organize community theater events</li>
+                <li><strong>Movie Nights</strong> - Plan outdoor and indoor movie screenings</li>
+                <li><strong>Comedy Shows</strong> - Host stand-up comedy and improv nights</li>
+            </ul>
+        {% elif subcategory == 'performance' %}
+            <p>Track and evaluate event performance metrics.</p>
+            <ul class="feature-list">
+                <li><strong>Attendance Tracking</strong> - Monitor event participation</li>
+                <li><strong>Feedback Collection</strong> - Gather community feedback</li>
+                <li><strong>Success Metrics</strong> - Analyze event outcomes</li>
+                <li><strong>ROI Analysis</strong> - Evaluate return on investment</li>
+            </ul>
+        {% else %}
+            <p>Plan, organize, and execute community events that bring people together.</p>
+            <div class="info-box">
+                <h5><i class="bi bi-info-circle"></i> Available Categories</h5>
+                <p class="mb-0">Select a subcategory from the menu to view specific event types.</p>
+            </div>
+        {% endif %}
+    
+    {% elif category == 'accountability' %}
+        <h3><i class="bi bi-shield-check"></i> Accountability & Transparency</h3>
+        {% if subcategory == 'consensus-budget' %}
+            <p>Community budget planning and consensus building.</p>
+            <ul class="feature-list">
+                <li><strong>Budget Proposals</strong> - Submit and review budget proposals</li>
+                <li><strong>Community Voting</strong> - Democratic decision-making process</li>
+                <li><strong>Financial Reports</strong> - Transparent financial reporting</li>
+                <li><strong>Allocation Tracking</strong> - Monitor fund distribution</li>
+            </ul>
+        {% elif subcategory == 'community-concerns' %}
+            <p>Address and track community issues and concerns.</p>
+            <ul class="feature-list">
+                <li><strong>Issue Reporting</strong> - Submit community concerns</li>
+                <li><strong>Status Tracking</strong> - Monitor resolution progress</li>
+                <li><strong>Public Forums</strong> - Discuss important issues</li>
+                <li><strong>Resolution Updates</strong> - Track outcomes</li>
+            </ul>
+        {% elif subcategory == 'communications' %}
+            {% if detail == 'media' %}
+                <p>Manage media relations and public communications.</p>
+                <ul class="feature-list">
+                    <li><strong>Press Releases</strong> - Distribute news to media outlets</li>
+                    <li><strong>Social Media</strong> - Manage online presence</li>
+                    <li><strong>Newsletter</strong> - Regular community updates</li>
+                    <li><strong>Media Kit</strong> - Resources for journalists</li>
+                </ul>
+            {% elif detail == 'institutions' %}
+                <p>Coordinate with institutional partners and stakeholders.</p>
+                <ul class="feature-list">
+                    <li><strong>Partnership Management</strong> - Build institutional relationships</li>
+                    <li><strong>Collaboration Projects</strong> - Joint initiatives</li>
+                    <li><strong>Resource Sharing</strong> - Coordinate resources</li>
+                    <li><strong>Impact Reporting</strong> - Share outcomes with partners</li>
+                </ul>
+            {% else %}
+                <p>Communication strategies and channels for community engagement.</p>
+            {% endif %}
+        {% else %}
+            <p>Ensure transparency and accountability in community operations.</p>
+        {% endif %}
+    
+    {% elif category == 'fellowship' %}
+        <h3><i class="bi bi-people"></i> Fellowship & Community Building</h3>
+        {% if subcategory == 'gatherings' %}
+            {% if detail == 'festivals' %}
+                <p>Organize and celebrate community festivals.</p>
+                <ul class="feature-list">
+                    <li><strong>Cultural Festivals</strong> - Celebrate diversity</li>
+                    <li><strong>Seasonal Events</strong> - Holiday celebrations</li>
+                    <li><strong>Food Festivals</strong> - Culinary experiences</li>
+                    <li><strong>Arts & Crafts Fairs</strong> - Showcase local talent</li>
+                </ul>
+            {% elif detail == 'reunions' %}
+                <p>Plan and host community reunion events.</p>
+                <ul class="feature-list">
+                    <li><strong>Alumni Gatherings</strong> - Reconnect with former members</li>
+                    <li><strong>Anniversary Celebrations</strong> - Milestone events</li>
+                    <li><strong>Family Reunions</strong> - Multi-generational gatherings</li>
+                    <li><strong>Homecoming Events</strong> - Welcome back celebrations</li>
+                </ul>
+            {% elif detail == 'raffles' %}
+                <p>Organize fundraising raffles and prize drawings.</p>
+                <ul class="feature-list">
+                    <li><strong>Prize Donations</strong> - Collect raffle prizes</li>
+                    <li><strong>Ticket Sales</strong> - Manage raffle tickets</li>
+                    <li><strong>Drawing Events</strong> - Host prize drawings</li>
+                    <li><strong>Winner Notifications</strong> - Contact winners</li>
+                </ul>
+            {% else %}
+                <p>Bring community members together through various gathering types.</p>
+            {% endif %}
+        {% elif subcategory == 'leadership' %}
+            {% if detail == 'contacts' %}
+                <p>Manage community leader contacts and relationships.</p>
+                <ul class="feature-list">
+                    <li><strong>Leader Directory</strong> - Contact information database</li>
+                    <li><strong>Communication Channels</strong> - Preferred contact methods</li>
+                    <li><strong>Meeting Schedules</strong> - Coordinate leadership meetings</li>
+                    <li><strong>Collaboration Tools</strong> - Shared resources</li>
+                </ul>
+            {% elif detail == 'neighborhoods' %}
+                <p>Coordinate neighborhood-level leadership and activities.</p>
+                <ul class="feature-list">
+                    <li><strong>Block Captains</strong> - Neighborhood representatives</li>
+                    <li><strong>Local Initiatives</strong> - Neighborhood projects</li>
+                    <li><strong>Safety Programs</strong> - Neighborhood watch</li>
+                    <li><strong>Beautification Projects</strong> - Community improvements</li>
+                </ul>
+            {% else %}
+                <p>Develop and support community leadership.</p>
+            {% endif %}
+        {% else %}
+            <p>Foster fellowship and strengthen community bonds.</p>
+        {% endif %}
+    
+    {% elif category == 'performance' %}
+        <h3><i class="bi bi-graph-up"></i> Performance Metrics</h3>
+        <p>Track and analyze community engagement performance.</p>
+        <div class="info-box">
+            <h5><i class="bi bi-book"></i> Recommended Reading</h5>
+            <p><strong>Slaying the Status Quo</strong></p>
+            <p class="mb-0">
+                <a href="https://www.amazon.com/s?k=Slaying+the+Status+Quo" 
+                   target="_blank" 
+                   class="text-white" 
+                   style="text-decoration: underline;">
+                    <i class="bi bi-book"></i> Buy on Amazon
+                </a>
+            </p>
+        </div>
+        <ul class="feature-list">
+            <li><strong>Engagement Metrics</strong> - Measure community participation</li>
+            <li><strong>Impact Assessment</strong> - Evaluate program effectiveness</li>
+            <li><strong>Trend Analysis</strong> - Identify patterns and opportunities</li>
+            <li><strong>Reporting Dashboard</strong> - Visualize key metrics</li>
+        </ul>
+    {% endif %}
+</div>
+
+<div class="content-card">
+    <h4><i class="bi bi-lightbulb"></i> Quick Actions</h4>
+    <div class="row">
+        <div class="col-md-4">
+            <a href="{{ url_for('add_event') }}" class="btn btn-primary btn-lg w-100 mb-3">
+                <i class="bi bi-plus-circle"></i> Create New Event
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('event_list') }}" class="btn btn-outline-primary btn-lg w-100 mb-3">
+                <i class="bi bi-list"></i> View All Events
+            </a>
+        </div>
+        <div class="col-md-4">
+            <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary btn-lg w-100 mb-3">
+                <i class="bi bi-bar-chart"></i> Generate Report
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

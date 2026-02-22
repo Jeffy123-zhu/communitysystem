@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5><i class="bi bi-file-earmark-bar-graph"></i> {{ title }}</h5>
+    <div>
+        <button onclick="window.print()" class="btn btn-outline-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
+        <a href="{{ url_for('reports') }}" class="btn btn-outline-secondary btn-sm">Back</a>
+    </div>
+</div>
+
+<!-- Summary Stats -->
+<div class="row mb-3">
+    <div class="col"><div class="card text-center"><div class="card-body py-2"><h4 class="mb-0">{{ total_events }}</h4><small>Events</small></div></div></div>
+    <div class="col"><div class="card text-center"><div class="card-body py-2"><h4 class="mb-0">{{ total_participants }}</h4><small>Participants</small></div></div></div>
+    <div class="col"><div class="card text-center"><div class="card-body py-2"><h4 class="mb-0">{{ "%.1f"|format(total_hours) }}</h4><small>Hours</small></div></div></div>
+    <div class="col"><div class="card text-center"><div class="card-body py-2"><h4 class="mb-0 text-success">${{ "%.2f"|format(total_income) }}</h4><small>Income</small></div></div></div>
+    <div class="col"><div class="card text-center"><div class="card-body py-2"><h4 class="mb-0 text-danger">${{ "%.2f"|format(total_expense) }}</h4><small>Expense</small></div></div></div>
+    <div class="col"><div class="card text-center bg-{{ 'success' if total_income - total_expense >= 0 else 'danger' }} text-white"><div class="card-body py-2"><h4 class="mb-0">${{ "%.2f"|format(total_income - total_expense) }}</h4><small>Net</small></div></div></div>
+</div>
+
+<div class="row">
+    <div class="col-md-8">
+        <!-- Events -->
+        <div class="card mb-3">
+            <div class="card-header py-2">Events</div>
+            <div class="card-body p-0">
+                {% if events %}
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Date</th><th>Event</th><th>Type</th><th>Participants</th><th>Net</th></tr></thead>
+                    <tbody>
+                        {% for e in events %}
+                        <tr>
+                            <td>{{ e.event_date }}</td>
+                            <td>{{ e.event_name }}</td>
+                            <td>{{ e.event_type_name or '-' }}</td>
+                            <td>{{ e.actual_participants }}</td>
+                            <td class="{{ 'text-success' if (e.net_profit or 0) >= 0 else 'text-danger' }}">${{ "%.2f"|format(e.net_profit or 0) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted p-3 mb-0">No events</p>{% endif %}
+            </div>
+        </div>
+        
+        <!-- Cost Breakdown -->
+        <div class="card mb-3">
+            <div class="card-header py-2">Cost Breakdown by Type</div>
+            <div class="card-body p-0">
+                {% if cost_breakdown %}
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Type</th><th>Hours</th><th>Income</th><th>Expense</th></tr></thead>
+                    <tbody>
+                        {% for c in cost_breakdown %}
+                        <tr>
+                            <td>{{ c.cost_type_name }}</td>
+                            <td>{{ "%.1f"|format(c.hours or 0) }}</td>
+                            <td>${{ "%.2f"|format(c.income or 0) }}</td>
+                            <td>${{ "%.2f"|format(c.expense or 0) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted p-3 mb-0">No data</p>{% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <!-- By Event Type -->
+        <div class="card mb-3">
+            <div class="card-header py-2">By Event Type</div>
+            <div class="card-body p-0">
+                {% if by_type %}
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Type</th><th>#</th><th>Profit</th></tr></thead>
+                    <tbody>
+                        {% for t in by_type %}
+                        <tr>
+                            <td>{{ t.name or 'Other' }}</td>
+                            <td>{{ t.count }}</td>
+                            <td>${{ "%.2f"|format(t.profit or 0) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted p-3 mb-0">No data</p>{% endif %}
+            </div>
+        </div>
+        
+        <!-- Distributions -->
+        <div class="card">
+            <div class="card-header py-2">Profit Distributions</div>
+            <div class="card-body p-0">
+                {% if distributions %}
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Target</th><th>Amount</th></tr></thead>
+                    <tbody>
+                        {% for d in distributions %}
+                        <tr>
+                            <td>{{ d.target_type }}: {{ d.target_name or '' }}</td>
+                            <td>${{ "%.2f"|format(d.total or 0) }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted p-3 mb-0">No distributions</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>@media print { .sidebar, .btn, nav { display: none !important; } .col-md-10 { width: 100% !important; margin: 0 !important; } }</style>
+{% endblock %}

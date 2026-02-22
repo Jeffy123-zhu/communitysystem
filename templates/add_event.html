@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+{% block title %}Add Event - Community Contribution Tracking{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-plus-circle"></i> Add New Event</h2>
+
+<form method="POST" class="needs-validation" novalidate>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-primary text-white">A. Event Information</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Event Name <span class="text-danger">*</span></label>
+                        <input type="text" name="event_name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Event Date <span class="text-danger">*</span></label>
+                        <input type="date" name="event_date" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Event Type</label>
+                        <select name="event_type_id" class="form-select">
+                            <option value="">-- Select Type --</option>
+                            {% for t in event_types %}<option value="{{ t.id }}">{{ t.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">LENS Category</label>
+                        <select name="lens_category_id" id="lens_category" class="form-select" onchange="updateSubcategories()">
+                            <option value="">-- Select LENS Category --</option>
+                            {% for cat in lens_categories %}<option value="{{ cat.id }}">{{ cat.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">LENS Subcategory</label>
+                        <select name="lens_subcategory_id" id="lens_subcategory" class="form-select">
+                            <option value="">-- Select Category First --</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <input type="text" name="location" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea name="description" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-info text-white">B. Organization</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Select Organization</label>
+                        <select name="organization_id" class="form-select">
+                            <option value="">-- Select Organization --</option>
+                            {% for o in organizations %}<option value="{{ o.id }}">{{ o.name }}</option>{% endfor %}
+                        </select>
+                        <small class="text-muted">Not found? <a href="{{ url_for('organization_list') }}">Add new</a></small>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card mb-3">
+                <div class="card-header bg-success text-white">C. Coordinator</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Coordinator Name</label>
+                        <input type="text" name="coordinator_name" class="form-control">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Phone</label>
+                            <input type="tel" name="coordinator_phone" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="coordinator_email" class="form-control">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-warning">D. Activity Data</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expected Participants</label>
+                            <input type="number" name="expected_participants" class="form-control" min="0" value="0">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Actual Participants</label>
+                            <input type="number" name="actual_participants" class="form-control" min="0" value="0">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Income ($)</label>
+                            <input type="number" name="income" class="form-control" min="0" step="0.01" value="0">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label">Expense ($)</label>
+                            <input type="number" name="expense" class="form-control" min="0" step="0.01" value="0">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card mb-3">
+                <div class="card-header bg-secondary text-white">F. Other</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Notes</label>
+                        <textarea name="notes" class="form-control" rows="3"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mb-4">
+        <button type="submit" class="btn btn-primary btn-lg"><i class="bi bi-save"></i> Save Event</button>
+        <a href="{{ url_for('event_list') }}" class="btn btn-outline-secondary btn-lg ms-2">Cancel</a>
+        <p class="text-muted mt-2"><small>You can add contributions after saving</small></p>
+    </div>
+</form>
+
+<script>
+// LENS subcategory data
+const lensData = {{ lens_data|tojson|safe }};
+
+function updateSubcategories() {
+    const categorySelect = document.getElementById('lens_category');
+    const subcategorySelect = document.getElementById('lens_subcategory');
+    const categoryId = categorySelect.value;
+    
+    // Clear existing options
+    subcategorySelect.innerHTML = '<option value="">-- Select Subcategory --</option>';
+    
+    if (categoryId && lensData[categoryId]) {
+        lensData[categoryId].forEach(subcat => {
+            const option = document.createElement('option');
+            option.value = subcat.id;
+            option.textContent = subcat.name;
+            subcategorySelect.appendChild(option);
+        });
+    }
+}
+</script>
+{% endblock %}

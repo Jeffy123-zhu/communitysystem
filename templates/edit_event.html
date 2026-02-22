@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+{% block title %}Edit Event - Community Contribution Tracking{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-pencil"></i> Edit: {{ event.event_name }}</h2>
+
+<ul class="nav nav-tabs mb-3">
+    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#basicInfo">Basic Info</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#costs">Cost Tracking</a></li>
+    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#distribution">Profit Distribution</a></li>
+</ul>
+
+<div class="tab-content">
+    <!-- Basic Info -->
+    <div class="tab-pane fade show active" id="basicInfo">
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">Event Info</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Event Name *</label>
+                                <input type="text" name="event_name" class="form-control" value="{{ event.event_name }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Date *</label>
+                                <input type="date" name="event_date" class="form-control" value="{{ event.event_date }}" required>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Type</label>
+                                <select name="event_type_id" class="form-select">
+                                    <option value="">-- Select --</option>
+                                    {% for t in event_types %}<option value="{{ t.id }}" {{ 'selected' if event.event_type_id == t.id }}>{{ t.name }}</option>{% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Location</label>
+                                <input type="text" name="location" class="form-control" value="{{ event.location or '' }}">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Description</label>
+                                <textarea name="description" class="form-control" rows="2">{{ event.description or '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-header">Organization & Coordinator</div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label class="form-label">Organization</label>
+                                <select name="organization_id" class="form-select">
+                                    <option value="">-- Select --</option>
+                                    {% for o in organizations %}<option value="{{ o.id }}" {{ 'selected' if event.organization_id == o.id }}>{{ o.name }}</option>{% endfor %}
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Coordinator</label>
+                                <input type="text" name="coordinator_name" class="form-control" value="{{ event.coordinator_name or '' }}">
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Phone</label>
+                                    <input type="tel" name="coordinator_phone" class="form-control" value="{{ event.coordinator_phone or '' }}">
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" name="coordinator_email" class="form-control" value="{{ event.coordinator_email or '' }}">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Expected</label>
+                                    <input type="number" name="expected_participants" class="form-control" value="{{ event.expected_participants }}">
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <label class="form-label">Actual</label>
+                                    <input type="number" name="actual_participants" class="form-control" value="{{ event.actual_participants }}">
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="In Progress" {{ 'selected' if event.status == 'In Progress' }}>In Progress</option>
+                                    <option value="Completed" {{ 'selected' if event.status == 'Completed' }}>Completed</option>
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Notes</label>
+                                <textarea name="notes" class="form-control" rows="2">{{ event.notes or '' }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><i class="bi bi-save"></i> Save Changes</button>
+            <a href="{{ url_for('event_list') }}" class="btn btn-outline-secondary">Back</a>
+        </form>
+    </div>
+    
+    <!-- Cost Tracking -->
+    <div class="tab-pane fade" id="costs">
+        <div class="alert alert-info">
+            <strong>Total Income:</strong> ${{ "%.2f"|format(total_income) }} | 
+            <strong>Total Expense:</strong> ${{ "%.2f"|format(total_expense) }} | 
+            <strong>Net Profit:</strong> <span class="{{ 'text-success' if net_profit >= 0 else 'text-danger' }}">${{ "%.2f"|format(net_profit) }}</span>
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header bg-success text-white"><i class="bi bi-plus"></i> Add Cost Entry</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_cost_entry', event_id=event.id) }}" class="row g-2">
+                    <div class="col-md-2">
+                        <label class="form-label">Type *</label>
+                        <select name="cost_type_id" class="form-select" required>
+                            {% for ct in cost_types %}<option value="{{ ct.id }}" data-rate="{{ ct.default_rate }}">{{ ct.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Income?</label>
+                        <select name="is_income" class="form-select">
+                            <option value="no">Expense</option>
+                            <option value="yes">Income</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Volunteer</label>
+                        <select name="volunteer_id" class="form-select">
+                            <option value="">-- None --</option>
+                            {% for v in volunteers %}<option value="{{ v.id }}">{{ v.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Hours</label>
+                        <input type="number" name="hours" class="form-control" step="0.5" min="0" value="0">
+                    </div>
+                    <div class="col-md-1">
+                        <label class="form-label">Rate/hr</label>
+                        <input type="number" name="rate_per_hour" class="form-control" step="0.01" min="0" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Amount ($)</label>
+                        <input type="number" name="amount" class="form-control" step="0.01" min="0" value="0">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Description</label>
+                        <input type="text" name="description" class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-success"><i class="bi bi-plus"></i> Add Entry</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Cost Entries ({{ cost_entries|length }})</div>
+            <div class="card-body">
+                {% if cost_entries %}
+                <table class="table table-sm">
+                    <thead><tr><th>Type</th><th>Income/Expense</th><th>Volunteer</th><th>Hours</th><th>Rate</th><th>Amount</th><th>Description</th><th></th></tr></thead>
+                    <tbody>
+                        {% for ce in cost_entries %}
+                        <tr class="{{ 'table-success' if ce.is_income else '' }}">
+                            <td>{{ ce.cost_type_name }}</td>
+                            <td><span class="badge {{ 'bg-success' if ce.is_income else 'bg-danger' }}">{{ 'Income' if ce.is_income else 'Expense' }}</span></td>
+                            <td>{{ ce.volunteer_name or '-' }}</td>
+                            <td>{{ ce.hours }}</td>
+                            <td>${{ "%.2f"|format(ce.rate_per_hour) }}</td>
+                            <td><strong>${{ "%.2f"|format(ce.amount) }}</strong></td>
+                            <td>{{ ce.description or '-' }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_cost_entry', cost_id=ce.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted">No cost entries yet</p>{% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Profit Distribution -->
+    <div class="tab-pane fade" id="distribution">
+        <div class="alert alert-warning">
+            <strong>Net Profit Available:</strong> ${{ "%.2f"|format(net_profit) }}
+        </div>
+        
+        <div class="card mb-3">
+            <div class="card-header bg-primary text-white"><i class="bi bi-plus"></i> Add Distribution</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_distribution', event_id=event.id) }}" class="row g-3">
+                    <div class="col-md-3">
+                        <label class="form-label">Target Type *</label>
+                        <select name="target_type" class="form-select" required>
+                            <option value="General Fund">General Fund</option>
+                            <option value="Specific Target">Specific Target</option>
+                            <option value="Another Organization">Another Organization</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">Target Name</label>
+                        <input type="text" name="target_name" class="form-control">
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Organization</label>
+                        <select name="target_organization_id" class="form-select">
+                            <option value="">-- None --</option>
+                            {% for o in organizations %}<option value="{{ o.id }}">{{ o.name }}</option>{% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Percentage *</label>
+                        <input type="number" name="percentage" class="form-control" step="0.01" min="0" max="100" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label">Notes</label>
+                        <input type="text" name="notes" class="form-control">
+                    </div>
+                    <div class="col-md-12">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-plus"></i> Add Distribution</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header">Profit Distributions</div>
+            <div class="card-body">
+                {% if distributions %}
+                <table class="table">
+                    <thead><tr><th>Type</th><th>Target</th><th>Percentage</th><th>Amount</th><th>Notes</th><th></th></tr></thead>
+                    <tbody>
+                        {% for d in distributions %}
+                        <tr>
+                            <td>{{ d.target_type }}</td>
+                            <td>{{ d.target_name or '-' }}</td>
+                            <td>{{ d.percentage }}%</td>
+                            <td>${{ "%.2f"|format(d.amount) }}</td>
+                            <td>{{ d.notes or '-' }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_distribution', dist_id=d.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted">No distributions yet</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

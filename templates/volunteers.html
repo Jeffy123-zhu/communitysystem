@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Volunteers{% endblock %}
+{% block content %}
+<h5 class="mb-3"><i class="bi bi-person-badge"></i> Volunteers (Individual Accounts)</h5>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header py-2 bg-primary text-white">Add Volunteer</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_volunteer') }}">
+                    <div class="mb-2">
+                        <label class="form-label small">Name *</label>
+                        <input type="text" name="name" class="form-control form-control-sm" required>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Phone</label>
+                        <input type="tel" name="phone" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Email</label>
+                        <input type="email" name="email" class="form-control form-control-sm">
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label small">Address</label>
+                        <input type="text" name="address" class="form-control form-control-sm">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-sm w-100"><i class="bi bi-plus"></i> Add</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header py-2">Volunteers ({{ volunteers|length }})</div>
+            <div class="card-body p-0">
+                {% if volunteers %}
+                <table class="table table-sm mb-0">
+                    <thead><tr><th>Name</th><th>Contact</th><th>Hours</th><th>Donations</th><th>Value</th><th></th></tr></thead>
+                    <tbody>
+                        {% for v in volunteers %}
+                        <tr>
+                            <td><a href="{{ url_for('view_volunteer', vol_id=v.id) }}"><strong>{{ v.name }}</strong></a></td>
+                            <td>{{ v.phone or v.email or '-' }}</td>
+                            <td>{{ "%.1f"|format(v.total_hours) }}</td>
+                            <td>${{ "%.2f"|format(v.total_donations) }}</td>
+                            <td>${{ "%.2f"|format(v.total_value) }}</td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_volunteer', vol_id=v.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm py-0"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted p-3 mb-0">No volunteers</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

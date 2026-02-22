@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Organizations - Community Contribution Tracking{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-building"></i> Organizations</h2>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header bg-primary text-white">Add New Organization</div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('add_organization') }}">
+                    <div class="mb-3">
+                        <label class="form-label">Name *</label>
+                        <input type="text" name="name" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <select name="type" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option value="School">School</option>
+                            <option value="Church">Church</option>
+                            <option value="Non-profit">Non-profit</option>
+                            <option value="Business">Business</option>
+                            <option value="Government">Government</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Size</label>
+                        <select name="size" class="form-select">
+                            <option value="">-- Select --</option>
+                            <option value="Small (1-50)">Small (1-50)</option>
+                            <option value="Medium (51-200)">Medium (51-200)</option>
+                            <option value="Large (200+)">Large (200+)</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Name</label>
+                        <input type="text" name="contact_name" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Phone</label>
+                        <input type="tel" name="contact_phone" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Email</label>
+                        <input type="email" name="contact_email" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100"><i class="bi bi-plus"></i> Add Organization</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">Organization List ({{ organizations|length }})</div>
+            <div class="card-body">
+                {% if organizations %}
+                <table class="table table-hover">
+                    <thead><tr><th>Name</th><th>Type</th><th>Size</th><th>Contact</th><th>Actions</th></tr></thead>
+                    <tbody>
+                        {% for org in organizations %}
+                        <tr>
+                            <td><strong>{{ org.name }}</strong></td>
+                            <td>{{ org.type or '-' }}</td>
+                            <td>{{ org.size or '-' }}</td>
+                            <td>{{ org.contact_name or '-' }}<br><small class="text-muted">{{ org.contact_phone or '' }} {{ org.contact_email or '' }}</small></td>
+                            <td>
+                                <form method="POST" action="{{ url_for('delete_organization', org_id=org.id) }}" class="d-inline" onsubmit="return confirm('Delete?')">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}<p class="text-muted text-center py-4">No organizations yet</p>{% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

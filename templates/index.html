@@ -1,0 +1,74 @@
+﻿{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h2 class="mb-4"><i class="bi bi-speedometer2"></i> Dashboard</h2>
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label class="form-label">Time Period</label>
+                <select name="period" class="form-select">
+                    <option value="to_date">To Date</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="annual">Annual</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Organization</label>
+                <select name="org_id" class="form-select">
+                    <option value="">All</option>
+                </select>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">Apply</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stat-card blue">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Events</h6>
+                <h3>0</h3>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card green">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Labor Value</h6>
+                <h4>$0</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card orange">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Income</h6>
+                <h4>$0</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stat-card purple">
+            <div class="card-body text-center">
+                <h6 class="text-muted">Net Profit</h6>
+                <h4>$0</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mb-4">
+    <div class="col-12">
+        <a href="/events/add" class="btn btn-primary btn-lg"><i class="bi bi-plus-circle"></i> Add New Event</a>
+        <a href="/reports" class="btn btn-outline-secondary btn-lg ms-2"><i class="bi bi-file-earmark-bar-graph"></i> Reports</a>
+    </div>
+</div>
+<div class="card">
+    <div class="card-header"><i class="bi bi-clock-history"></i> Recent Events</div>
+    <div class="card-body">
+        <p class="text-muted">No events yet. <a href="/events/add">Add one</a></p>
+    </div>
+</div>
+{% endblock %}

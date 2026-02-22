@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}LENS Categories Demo{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4><i class="bi bi-diagram-3"></i> LENS Categories Hover Menu Demo</h4>
+    </div>
+    <div class="card-body">
+        <h5>🎯 How to Use the Hover Dropdown Menu</h5>
+        <ol class="lead">
+            <li>Look at the <strong>sidebar on the left</strong></li>
+            <li>Find <strong>"LENS Categories ▶"</strong></li>
+            <li><strong>Move your mouse</strong> over it (don't click!)</li>
+            <li>The menu will <strong>automatically pop out</strong></li>
+            <li>Move your mouse over any category to see subcategories</li>
+        </ol>
+        
+        <hr>
+        
+        <h5>📊 Menu Structure</h5>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="alert alert-info">
+                    <h6><strong>7 Main Categories:</strong></h6>
+                    <ul>
+                        <li>CALENDAR (3 items)</li>
+                        <li>ACCOUNTABILITY (9 items)</li>
+                        <li>COMMUNICATIONS (5 items)</li>
+                        <li>FELLOWSHIP (6 items)</li>
+                        <li>SERVICE (8 items)</li>
+                        <li>LEADERSHIP (12 items)</li>
+                        <li>VIABILITY (12 items)</li>
+                    </ul>
+                    <p class="mb-0"><strong>Total: 55 subcategories</strong></p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="alert alert-success">
+                    <h6><strong>Features:</strong></h6>
+                    <ul>
+                        <li>✅ Auto-expand on hover</li>
+                        <li>✅ Multi-level navigation</li>
+                        <li>✅ Auto-collapse when mouse leaves</li>
+                        <li>✅ Smooth animations</li>
+                        <li>✅ Scrollable for long lists</li>
+                        <li>✅ Visual arrows (▶) for guidance</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <hr>
+        
+        <h5>🎨 Visual Guide</h5>
+        <div class="alert alert-warning">
+            <h6>Step-by-step:</h6>
+            <ol>
+                <li><strong>Hover over "LENS Categories"</strong> → First menu appears on the right</li>
+                <li><strong>Hover over "ACCOUNTABILITY"</strong> → Subcategories appear on the right</li>
+                <li><strong>Click any subcategory</strong> → Navigate to that category</li>
+                <li><strong>Move mouse away</strong> → Menu automatically closes</li>
+            </ol>
+        </div>
+        
+        <div class="text-center mt-4">
+            <h3 class="text-primary">👈 Try it now on the sidebar!</h3>
+            <p class="lead">Move your mouse over <strong>"LENS Categories"</strong></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
